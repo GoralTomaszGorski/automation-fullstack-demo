@@ -34,4 +34,8 @@ public class TextBoxPage {
     public String getOutputName() {
         return driver.findElement(outputName).getText();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/development

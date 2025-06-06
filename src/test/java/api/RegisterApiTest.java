@@ -25,4 +25,8 @@ public class RegisterApiTest {
         Assertions.assertEquals(400, response.getStatusCode());
         Assertions.assertEquals("Missing password", response.jsonPath().getString("error"));
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/development

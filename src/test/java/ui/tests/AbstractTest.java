@@ -14,4 +14,8 @@ public class AbstractTest extends SeleniumTest {
         LoginPage = new LoginPage(driver);
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/development

@@ -28,4 +28,7 @@ public class ConfigProvider {
     }
 
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/development

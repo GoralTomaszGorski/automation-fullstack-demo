@@ -22,4 +22,8 @@ public abstract class BasePage {
     protected <T extends BasePage> T getInstance(Class<T> expectedPage) {
         return expectedPage.getDeclaredConstructor(WebDriver.class).newInstance(driver);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/development
