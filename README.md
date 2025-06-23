@@ -1,8 +1,13 @@
 # Automation Fullstack Demo
 
 Projekt pokazujący automatyzację testów UI, API oraz raportowanie z Allure.  
-Testowany frontend: https://demoqa.com/text-box  
 Testowane API: https://reqres.in/api/register
+
+## swagger documentation
+https://reqres.in/api-docs/
+we need add: 
+header("x-api-key", API_KEY)
+for free tests
 
 ## Technologie
 - Java 17
