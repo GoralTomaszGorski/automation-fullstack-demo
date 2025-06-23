@@ -2,7 +2,7 @@ package api;
 
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
-import utils.ApiClient;
+import ui.utils.ApiClient;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
