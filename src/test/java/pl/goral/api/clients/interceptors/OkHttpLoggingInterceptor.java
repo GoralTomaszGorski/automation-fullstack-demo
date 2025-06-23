@@ -1,4 +1,4 @@
-package pl.goral.api.interceptors;
+package pl.goral.api.clients.interceptors;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +8,7 @@ import okio.Buffer;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static pl.goral.api.ObjectMapperProvider.getObjectMapper;
+import static pl.goral.api.clients.ObjectMapperProvider.getObjectMapper;
 
 //To niestandardowy interceptor do OkHttp – czyli "przechwytywacz", który pozwala logować każde żądanie i odpowiedź HTTP zanim zostaną wysłane/odebrane.
 @Slf4j
