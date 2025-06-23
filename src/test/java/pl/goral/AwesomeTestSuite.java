@@ -6,7 +6,7 @@ import org.junit.platform.suite.api.Suite;
 
 
 @Suite
-@SelectPackages("pl.goral.api")
+@SelectPackages("pl.goral.api.tests")
 
 public class AwesomeTestSuite {
 

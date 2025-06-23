@@ -1,4 +1,4 @@
-package pl.goral.api.clients;
+package pl.goral.api.dto;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
