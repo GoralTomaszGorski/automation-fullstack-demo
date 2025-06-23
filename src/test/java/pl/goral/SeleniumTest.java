@@ -1,9 +1,13 @@
-import config.ConfigProvider;
+package pl.goral;
+
+import pl.goral.extensions.NameLoggingExtension;
+import pl.goral.extensions.ScreenshotTakerExtension;
+import pl.goral.config.ConfigProvider;
+import pl.goral.listeners.TestExecutionListener;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.launcher.TestExecutionListener;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;

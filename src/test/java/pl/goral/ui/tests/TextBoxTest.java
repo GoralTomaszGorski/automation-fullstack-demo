@@ -1,10 +1,10 @@
-package ui.tests;
+package pl.goral.ui.tests;
 
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import ui.pages.TextBoxPage;
+import pl.goral.ui.pages.TextBoxPage;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TextBoxTest {

@@ -1,7 +1,9 @@
-package ui.tests;
+package pl.goral.ui.tests;
 
 
 import org.junit.jupiter.api.BeforeEach;
+import pl.goral.SeleniumTest;
+import pl.goral.ui.pages.LoginPage;
 
 
 public class AbstractTest extends SeleniumTest {

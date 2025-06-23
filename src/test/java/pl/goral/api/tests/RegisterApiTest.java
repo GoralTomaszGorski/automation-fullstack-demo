@@ -1,8 +1,8 @@
-package api.tests;
+package pl.goral.api.tests;
 
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
-import ui.utils.ApiClient;
+import pl.goral.ui.utils.ApiClient;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

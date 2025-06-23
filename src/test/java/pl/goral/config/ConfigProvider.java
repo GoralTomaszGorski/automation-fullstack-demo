@@ -1,4 +1,4 @@
-package config;
+package pl.goral.config;
 
 import java.io.IOException;
 import java.io.InputStream;

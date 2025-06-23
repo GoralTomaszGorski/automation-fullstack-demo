@@ -1,4 +1,4 @@
-package ui.pages;
+package pl.goral.ui.pages;
 
 import lombok.SneakyThrows;
 import org.openqa.selenium.WebDriver;

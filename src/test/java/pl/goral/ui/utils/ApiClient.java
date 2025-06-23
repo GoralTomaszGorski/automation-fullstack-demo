@@ -1,4 +1,4 @@
-package ui.utils;
+package pl.goral.ui.utils;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
