@@ -19,6 +19,13 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+      <dependency>
+        <groupId>io.rest-assured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <version>5.5.5</version>
+        <scope>test</scope>
+      </dependency>
       <dependency>
         <groupId>io.qameta.allure</groupId>
         <artifactId>allure-bom</artifactId>
@@ -108,6 +115,13 @@
       <groupId>io.github.bonigarcia</groupId>
       <artifactId>webdrivermanager</artifactId>
       <version>6.1.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>5.5.5</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

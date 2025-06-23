@@ -1,9 +1,9 @@
-package pl.goral.api;
+package pl.goral.api.clients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import pl.goral.api.interceptors.OkHttpLoggingInterceptor;
+import pl.goral.api.clients.interceptors.OkHttpLoggingInterceptor;
 import pl.goral.config.ConfigProvider;
 
 public abstract class BaseApi {
