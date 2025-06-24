@@ -16,9 +16,8 @@ public abstract class BaseApiTest {
     protected static String baseUrl;
     protected static String apiKey;
 
-    protected UserDto user;
-
     protected static String token;
+    protected static UserDto user = UserGenerator.generate();
 
     @BeforeAll
     public static void globalSetup() {
@@ -30,19 +29,15 @@ public abstract class BaseApiTest {
         RestAssured.filters(new RequestResponseLoggingFilter());
     }
 
-    public BaseApiTest() {
-        this.user = UserGenerator.generate();
-    }
-
-    protected String loginAndGetToken(String email, String password) {
-        String requestBody = buildRequestBody(email, password);
+    protected String loginOrRegisterAndGetToken(String url) {
+        String requestBody = buildRequestBody(user.getEmail(), user.getPassword());
 
         Response response = given()
                 .contentType(ContentType.JSON)
                 .header("x-api-key", apiKey)
                 .body(requestBody)
                 .when()
-                .post("/login")
+                .post(url)
                 .then()
                 .statusCode(200)
                 .extract().response();
@@ -59,7 +54,8 @@ public abstract class BaseApiTest {
             first = false;
         }
         if (password != null) {
-            if (!first) json.append(", ");
+            if (!first)
+                json.append(", ");
             json.append("\"password\": \"").append(password).append("\"");
         }
         json.append("}");

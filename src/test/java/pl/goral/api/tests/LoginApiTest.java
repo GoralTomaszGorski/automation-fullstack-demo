@@ -9,17 +9,29 @@ import static org.hamcrest.Matchers.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LoginApiTest extends BaseApiTest {
 
+    String loginUrl = "/login";
+    String registerUrl = "/register";
+
     @Test
     @Order(1)
-    @DisplayName("Successful login - returns token")
-    public void testSuccessfulLogin() {
-        String token = loginAndGetToken(user.getEmail(), user.getPassword());
+    @DisplayName("Successful register - returns token")
+    public void testSuccessfulRegister() {
+        String token = loginOrRegisterAndGetToken(registerUrl);
         Assertions.assertNotNull(token, "Token should not be null");
         System.out.println("Token: " + token);
     }
 
     @Test
     @Order(2)
+    @DisplayName("Successful login - returns token")
+    public void testSuccessfulLogin() {
+        String token = loginOrRegisterAndGetToken(loginUrl);
+        Assertions.assertNotNull(token, "Token should not be null");
+        System.out.println("Token: " + token);
+    }
+
+    @Test
+    @Order(3)
     @DisplayName("Login without password - returns error 'Missing password'")
     public void testLoginMissingPassword() {
         String requestBody = buildRequestBody(user.getEmail(), null);
