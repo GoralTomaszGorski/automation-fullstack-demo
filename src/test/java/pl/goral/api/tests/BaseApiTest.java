@@ -15,14 +15,23 @@ public abstract class BaseApiTest {
 
     protected static String baseUrl;
     protected static String apiKey;
+    protected static String email = ConfigProvider.get("credentials.email");;
+    protected static String password = ConfigProvider.get("credentials.password");
+
 
     protected static String token;
-    protected static UserDto user = UserGenerator.generate();
+    protected static UserDto user;
+
+    public static void setUser(UserDto user) {
+        BaseApiTest.user = user;
+        user.setEmail(email);
+        user.setEmail(password);
+    }
 
     @BeforeAll
     public static void globalSetup() {
         baseUrl = ConfigProvider.get("api.url");
-        apiKey = "reqres-free-v1";
+        apiKey = ConfigProvider.get("api.key");
 
         RestAssured.baseURI = baseUrl;
         RestAssured.useRelaxedHTTPSValidation();
@@ -30,7 +39,7 @@ public abstract class BaseApiTest {
     }
 
     protected String loginOrRegisterAndGetToken(String url) {
-        String requestBody = buildRequestBody(user.getEmail(), user.getPassword());
+        String requestBody = buildRequestBody(email, password);
 
         Response response = given()
                 .contentType(ContentType.JSON)
