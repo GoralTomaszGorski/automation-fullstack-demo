@@ -34,7 +34,7 @@ public class LoginApiTest extends BaseApiTest {
     @Order(3)
     @DisplayName("Login without password - returns error 'Missing password'")
     public void testLoginMissingPassword() {
-        String requestBody = buildRequestBody(user.getEmail(), null);
+        String requestBody = buildRequestBody(email, null);
 
         given()
                 .contentType(ContentType.JSON)
