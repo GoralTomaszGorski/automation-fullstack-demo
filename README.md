@@ -8,6 +8,12 @@ https://reqres.in/api-docs/
 we need add: 
 header("x-api-key", API_KEY)
 for free tests
+userdata cant by generated because there isn't DB in application
+we cant use 
+protected static UserDto user = UserGenerator.generate();
+it is recommended to use
+protected static UserDto user = new UserDto("eve.holt@reqres.in", "cityslicka");
+
 
 ## Technologie
 - Java 17
