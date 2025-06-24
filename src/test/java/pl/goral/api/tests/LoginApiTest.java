@@ -1,34 +1,35 @@
 package pl.goral.api.tests;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
-
-import pl.goral.api.dto.UserDto;
-import pl.goral.api.dto.generators.UserGenerator;
-import pl.goral.config.ConfigProvider;
-import pl.goral.api.filters.RequestResponseLoggingFilter;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LoginApiTest extends BaseApiTest {
 
-    private final String LOGIN_ENDPOINT = "/login";
-    private UserDto user = UserGenerator.generate();
+    @Test
+    @Order(1)
+    @DisplayName("Successful login - returns token")
+    public void testSuccessfulLogin() {
+        String token = loginAndGetToken(user.getEmail(), user.getPassword());
+        Assertions.assertNotNull(token, "Token should not be null");
+        System.out.println("Token: " + token);
+    }
 
     @Test
-    @DisplayName("Login without password - returns 'Missing password'")
-    void testMissingPassword() {
+    @Order(2)
+    @DisplayName("Login without password - returns error 'Missing password'")
+    public void testLoginMissingPassword() {
         String requestBody = buildRequestBody(user.getEmail(), null);
 
         given()
                 .contentType(ContentType.JSON)
-                .header("x-api-key", API_KEY)
+                .header("x-api-key", apiKey)
                 .body(requestBody)
                 .when()
-                .post(LOGIN_ENDPOINT)
+                .post("/login")
                 .then()
                 .statusCode(400)
                 .body("error", equalTo("Missing password"));

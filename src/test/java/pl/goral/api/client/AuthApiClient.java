@@ -12,6 +12,9 @@ public class AuthApiClient {
     private final String baseUri;
     private final String apiKey;
 
+    private static final String REGISTER_ENDPOINT = "/register";
+    private static final String LOGIN_ENDPOINT = "/login";
+
     public AuthApiClient(String baseUri, String apiKey) {
         this.baseUri = baseUri;
         this.apiKey = apiKey;
@@ -24,8 +27,9 @@ public class AuthApiClient {
                 .header("x-api-key", apiKey)
                 .body(user)
                 .when()
-                .post("/register")
-                .then();
+                .post(REGISTER_ENDPOINT)
+                .then()
+                .log().all();
     }
 
     public ValidatableResponse login(UserDto user) {
@@ -35,8 +39,9 @@ public class AuthApiClient {
                 .header("x-api-key", apiKey)
                 .body(user)
                 .when()
-                .post("/login")
-                .then();
+                .post(LOGIN_ENDPOINT)
+                .then()
+                .log().all();
     }
 }
 

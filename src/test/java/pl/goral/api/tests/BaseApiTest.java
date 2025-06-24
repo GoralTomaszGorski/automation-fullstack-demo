@@ -2,58 +2,66 @@ package pl.goral.api.tests;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import pl.goral.api.dto.UserDto;
-import pl.goral.api.filters.RequestResponseLoggingFilter;
+import pl.goral.api.dto.generators.UserGenerator;
 import pl.goral.config.ConfigProvider;
+import pl.goral.api.filters.RequestResponseLoggingFilter;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.notNullValue;
 
 public abstract class BaseApiTest {
 
-    protected static final String BASE_URL = ConfigProvider.get("api.url");
-    protected static final String API_KEY = "reqres-free-v1";
+    protected static String baseUrl;
+    protected static String apiKey;
+
+    protected UserDto user;
+
+    protected static String token;
 
     @BeforeAll
-    public static void setupBase() {
-        RestAssured.baseURI = BASE_URL;
+    public static void globalSetup() {
+        baseUrl = ConfigProvider.get("api.url");
+        apiKey = "reqres-free-v1";
+
+        RestAssured.baseURI = baseUrl;
         RestAssured.filters(new RequestResponseLoggingFilter());
     }
 
-    protected String buildRequestBody(String email, String password) {
-        StringBuilder json = new StringBuilder("{");
-        if (email != null) json.append("\"email\": \"").append(email).append("\"");
-        if (password != null) {
-            if (email != null) json.append(", ");
-            json.append("\"password\": \"").append(password).append("\"");
-        }
-        json.append("}");
-        return json.toString();
+    public BaseApiTest() {
+        this.user = UserGenerator.generate();
     }
 
-    protected String registerAndLogin(UserDto user) {
-        // Register
-        given()
-                .contentType(ContentType.JSON)
-                .header("x-api-key", API_KEY)
-                .body(user)
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(200)
-                .body("token", notNullValue());
+    protected String loginAndGetToken(String email, String password) {
+        String requestBody = buildRequestBody(email, password);
 
-        // Log in
-        return given()
+        Response response = given()
                 .contentType(ContentType.JSON)
-                .header("x-api-key", API_KEY)
-                .body(user)
+                .header("x-api-key", apiKey)
+                .body(requestBody)
                 .when()
                 .post("/login")
                 .then()
                 .statusCode(200)
-                .body("token", notNullValue())
-                .extract().path("token");
+                .extract().response();
+
+        token = response.jsonPath().getString("token");
+        return token;
+    }
+
+    protected String buildRequestBody(String email, String password) {
+        StringBuilder json = new StringBuilder("{");
+        boolean first = true;
+        if (email != null) {
+            json.append("\"email\": \"").append(email).append("\"");
+            first = false;
+        }
+        if (password != null) {
+            if (!first) json.append(", ");
+            json.append("\"password\": \"").append(password).append("\"");
+        }
+        json.append("}");
+        return json.toString();
     }
 }
