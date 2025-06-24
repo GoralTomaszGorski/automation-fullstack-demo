@@ -26,6 +26,7 @@ public abstract class BaseApiTest {
         apiKey = "reqres-free-v1";
 
         RestAssured.baseURI = baseUrl;
+        RestAssured.useRelaxedHTTPSValidation();
         RestAssured.filters(new RequestResponseLoggingFilter());
     }
 
