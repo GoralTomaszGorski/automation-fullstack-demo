@@ -9,14 +9,14 @@ import static org.hamcrest.Matchers.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LoginApiTest extends BaseApiTest {
 
-    String loginUrl = "/login";
-    String registerUrl = "/register";
+    private static final String LOGIN_URL = "/login";
+    private static final String REGISTER_URL = "/register";
 
     @Test
     @Order(1)
     @DisplayName("Successful register - returns token")
     public void testSuccessfulRegister() {
-        String token = loginOrRegisterAndGetToken(registerUrl);
+        String token = loginOrRegisterAndGetToken(REGISTER_URL);
         Assertions.assertNotNull(token, "Token should not be null");
         System.out.println("Token: " + token);
     }
@@ -25,7 +25,7 @@ public class LoginApiTest extends BaseApiTest {
     @Order(2)
     @DisplayName("Successful login - returns token")
     public void testSuccessfulLogin() {
-        String token = loginOrRegisterAndGetToken(loginUrl);
+        String token = loginOrRegisterAndGetToken(LOGIN_URL);
         Assertions.assertNotNull(token, "Token should not be null");
         System.out.println("Token: " + token);
     }
