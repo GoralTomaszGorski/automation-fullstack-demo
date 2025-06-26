@@ -3,6 +3,7 @@ package pl.goral.api.tests;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static io.restassured.RestAssured.given;
@@ -13,6 +14,7 @@ public class RegisterApiTest extends BaseApiTest {
 
     private static final String REGISTER_URL = "/register";
     private static String token;
+    private String expectedError;
 
     @Test
     @Order(1)
@@ -36,21 +38,29 @@ public class RegisterApiTest extends BaseApiTest {
         logger.info("Token: " + token);
     }
 
+
+    /**
+     * @param email
+     * @param password
+     * @param expectedError
+     */
     @ParameterizedTest
-    @CsvSource({
-            "email,, Missing password",
-            ",password, Missing email or username"
-    })
-    public void testRegisterErrors(String email, String password, String expectedError) {
+    @DisplayName("Try Register: 1. without password 2. without login")
+    @CsvFileSource(resources = "/register-data.csv", numLinesToSkip = 1)
+    void testRegisterErrors(String email, String password, String expectedError) {
         String body = buildRequestBody(email, password);
 
-        given() /*...*/
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
                 .body(body)
-                .when().post(REGISTER_URL)
+                .when()
+                .post(REGISTER_URL)
                 .then()
                 .statusCode(400)
                 .body("error", equalTo(expectedError));
     }
+
 
 
 }
