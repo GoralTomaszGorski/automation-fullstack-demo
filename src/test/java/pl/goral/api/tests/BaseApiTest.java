@@ -5,7 +5,6 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import pl.goral.api.dto.UserDto;
-import pl.goral.api.dto.generators.UserGenerator;
 import pl.goral.config.ConfigProvider;
 import pl.goral.api.filters.RequestResponseLoggingFilter;
 
@@ -22,12 +21,6 @@ public abstract class BaseApiTest {
     protected static String token;
     protected static UserDto user;
 
-    public static void setUser(UserDto user) {
-        BaseApiTest.user = user;
-        user.setEmail(email);
-        user.setEmail(password);
-    }
-
     @BeforeAll
     public static void globalSetup() {
         baseUrl = ConfigProvider.get("api.url");
@@ -36,23 +29,6 @@ public abstract class BaseApiTest {
         RestAssured.baseURI = baseUrl;
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured.filters(new RequestResponseLoggingFilter());
-    }
-
-    protected String loginOrRegisterAndGetToken(String url) {
-        String requestBody = buildRequestBody(email, password);
-
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .header("x-api-key", apiKey)
-                .body(requestBody)
-                .when()
-                .post(url)
-                .then()
-                .statusCode(200)
-                .extract().response();
-
-        token = response.jsonPath().getString("token");
-        return token;
     }
 
     protected String buildRequestBody(String email, String password) {
