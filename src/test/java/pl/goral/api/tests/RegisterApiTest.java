@@ -2,6 +2,8 @@ package pl.goral.api.tests;
 
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -34,38 +36,21 @@ public class RegisterApiTest extends BaseApiTest {
         logger.info("Token: " + token);
     }
 
-    @Test
-    @Order(2)
-    @DisplayName("Register without password - returns error 'Missing password'")
-    public void testRegisterMissingPassword() {
-        String requestBody = buildRequestBody(email, null);
+    @ParameterizedTest
+    @CsvSource({
+            "email,, Missing password",
+            ",password, Missing email or username"
+    })
+    public void testRegisterErrors(String email, String password, String expectedError) {
+        String body = buildRequestBody(email, password);
 
-        given()
-                .contentType(ContentType.JSON)
-                .header("x-api-key", apiKey)
-                .body(requestBody)
-                .when()
-                .post(REGISTER_URL)
+        given() /*...*/
+                .body(body)
+                .when().post(REGISTER_URL)
                 .then()
                 .statusCode(400)
-                .body("error", equalTo("Missing password"));
+                .body("error", equalTo(expectedError));
     }
 
-    @Test
-    @Order(3)
-    @DisplayName("Register without login - returns error 'Missing email or username'")
-    public void testRegisterBadLogin() {
-        String requestBody = buildRequestBody(null, password);
-
-        given()
-                .contentType(ContentType.JSON)
-                .header("x-api-key", apiKey)
-                .body(requestBody)
-                .when()
-                .post(REGISTER_URL)
-                .then()
-                .statusCode(400)
-                .body("error", equalTo("Missing email or username"));
-    }
 
 }
