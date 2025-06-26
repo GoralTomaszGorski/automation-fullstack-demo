@@ -35,12 +35,6 @@ public class RegisterApiTest extends BaseApiTest {
         logger.info("Token: " + token);
     }
 
-
-    /**
-     * @param email
-     * @param password
-     * @param expectedError
-     */
     @ParameterizedTest
     @DisplayName("Try Register: 1. without password 2. without login 3. wrong email")
     @CsvFileSource(resources = "/register-data.csv", numLinesToSkip = 1)
@@ -57,7 +51,4 @@ public class RegisterApiTest extends BaseApiTest {
                 .statusCode(400)
                 .body("error", equalTo(expectedError));
     }
-
-
-
 }
