@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>pl.goral</groupId>
-  <artifactId>shopapp-selenium</artifactId>
+  <artifactId>automation-fullstack-demo</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>shopapp-selenium</name>
+  <name>automation-fullstack-demo</name>
 
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
