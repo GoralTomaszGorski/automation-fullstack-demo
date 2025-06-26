@@ -4,8 +4,6 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.junit.jupiter.params.provider.CsvSource;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -17,7 +15,6 @@ public class RegisterApiTest extends BaseApiTest {
     private String expectedError;
 
     @Test
-    @Order(1)
     @DisplayName("Successful register - returns token")
     public void testSuccessfulRegister() {
         String requestBody = buildRequestBody(email, password);
@@ -45,7 +42,7 @@ public class RegisterApiTest extends BaseApiTest {
      * @param expectedError
      */
     @ParameterizedTest
-    @DisplayName("Try Register: 1. without password 2. without login")
+    @DisplayName("Try Register: 1. without password 2. without login 3. wrong email")
     @CsvFileSource(resources = "/register-data.csv", numLinesToSkip = 1)
     void testRegisterErrors(String email, String password, String expectedError) {
         String body = buildRequestBody(email, password);

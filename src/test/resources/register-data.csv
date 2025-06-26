@@ -1,3 +1,4 @@
 email,password,expectedStatus,expectedMessage
 eve.holt@reqres.in,,Missing password
-,pistol,Missing email or username
+,pistol,Missing email or username,
+wrongEmail,pistol,Note: Only defined users succeed registration
