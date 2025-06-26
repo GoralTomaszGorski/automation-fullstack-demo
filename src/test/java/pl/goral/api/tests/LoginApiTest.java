@@ -27,7 +27,7 @@ public class LoginApiTest extends BaseApiTest {
                 .then()
                 .statusCode(200);
         Assertions.assertNotNull(token, "Token should not be null");
-        System.out.println("Token: " + token);
+        logger.info("Token: " + token);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class LoginApiTest extends BaseApiTest {
                 .then()
                 .statusCode(200);
         Assertions.assertNotNull(token, "Token should not be null");
-        System.out.println("Token: " + token);
+        logger.info("Token: " + token);
     }
 
     @Test

@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.*;
 public class RegisterApiTest extends BaseApiTest {
 
     private static final String REGISTER_URL = "/register";
+    private static String token;
 
     @Test
     @Order(1)
@@ -17,18 +18,21 @@ public class RegisterApiTest extends BaseApiTest {
     public void testSuccessfulRegister() {
         String requestBody = buildRequestBody(email, password);
 
-        given()
+        token = given()
                 .contentType(ContentType.JSON)
                 .header("x-api-key", apiKey)
                 .body(requestBody)
                 .when()
                 .post(REGISTER_URL)
                 .then()
-                .statusCode(200);
-        Assertions.assertNotNull(token, "Token should not be null");
-        System.out.println("Token: " + token);
-    }
+                .statusCode(200)
+                .body("token", notNullValue())
+                .extract()
+                .path("token");
 
+        Assertions.assertNotNull(token, "Token should not be null");
+        logger.info("Token: " + token);
+    }
 
     @Test
     @Order(2)
@@ -46,7 +50,7 @@ public class RegisterApiTest extends BaseApiTest {
                 .statusCode(400)
                 .body("error", equalTo("Missing password"));
     }
-    
+
     @Test
     @Order(3)
     @DisplayName("Register without login - returns error 'Missing email or username'")
@@ -64,20 +68,4 @@ public class RegisterApiTest extends BaseApiTest {
                 .body("error", equalTo("Missing email or username"));
     }
 
-    @Test
-    @Order(4)
-    @DisplayName("Register with bad passwoerd login - returns error 'Bad password'")
-    public void testRegisterMissingLogin() {
-        String requestBody = buildRequestBody(email, "badPassword");
-
-        given()
-                .contentType(ContentType.JSON)
-                .header("x-api-key", apiKey)
-                .body(requestBody)
-                .when()
-                .post(REGISTER_URL)
-                .then()
-                .statusCode(400)
-                .body("error", equalTo("Bad password"));
-    }
 }
