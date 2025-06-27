@@ -127,7 +127,7 @@ public class UserListApiTest extends BaseApiTest {
     public void testUpdateUserWithGenerator() throws Exception {
         UserDto user = UserGenerator.generate();
 
-        // JSON only for needed fields
+        // JSON only for need fields
         String requestBody = MAPPER.writeValueAsString(Map.of(
                 "name", user.getUsername(),
                 "job", user.getJob(),
@@ -170,5 +170,20 @@ public class UserListApiTest extends BaseApiTest {
                 .body("job", equalTo(newJob))
                 .body("updatedAt", startsWith(todayDate));
     }
+
+    @Test
+    @DisplayName("Delete user by ID - expect 204 No Content")
+    public void testDeleteUserById() {
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
+                .pathParam("id", 5)
+                .when()
+                .delete(SINGLE_URL)
+                .then()
+                .statusCode(204)
+                .body(emptyString());
+    }
+
 
 }
