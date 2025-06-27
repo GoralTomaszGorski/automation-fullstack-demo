@@ -51,4 +51,23 @@ public class UserListApiTest extends BaseApiTest {
                 .body("data[0].avatar", startsWith("https://reqres.in/img/faces/"));
     }
 
+    @Test
+    @DisplayName("Get single user by ID")
+    public void testGetUserById() {
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
+                .when()
+                .get("/users/2")
+                .then()
+                .statusCode(200)
+                .body("data.id", equalTo(2))
+                .body("data.email", equalTo("janet.weaver@reqres.in"))
+                .body("data.first_name", equalTo("Janet"))
+                .body("data.last_name", equalTo("Weaver"))
+                .body("data.avatar", startsWith("https://reqres.in/img/faces/"))
+                .body("support.url", not(emptyString()))
+                .body("support.text", not(emptyString()));
+    }
+
 }
