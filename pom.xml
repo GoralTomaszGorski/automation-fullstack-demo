@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>pl.goral</groupId>
-  <artifactId>shopapp-selenium</artifactId>
+  <artifactId>automation-fullstack-demo</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>shopapp-selenium</name>
+  <name>automation-fullstack-demo</name>
 
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
@@ -133,6 +133,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.2</version>
         <configuration>
+          <systemPropertyVariables>
+            <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+          </systemPropertyVariables>
           <argLine>
             -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
           </argLine>

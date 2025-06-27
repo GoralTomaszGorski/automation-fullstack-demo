@@ -16,18 +16,36 @@ public class LoginApiTest extends BaseApiTest {
     @Order(1)
     @DisplayName("Successful register - returns token")
     public void testSuccessfulRegister() {
-        String token = loginOrRegisterAndGetToken(REGISTER_URL);
+        String requestBody = buildRequestBody(email, password);
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
+                .body(requestBody)
+                .when()
+                .post(REGISTER_URL)
+                .then()
+                .statusCode(200);
         Assertions.assertNotNull(token, "Token should not be null");
-        System.out.println("Token: " + token);
+        logger.info("Token: " + token);
     }
 
     @Test
     @Order(2)
     @DisplayName("Successful login - returns token")
     public void testSuccessfulLogin() {
-        String token = loginOrRegisterAndGetToken(LOGIN_URL);
+        String requestBody = buildRequestBody(email, password);
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
+                .body(requestBody)
+                .when()
+                .post(REGISTER_URL)
+                .then()
+                .statusCode(200);
         Assertions.assertNotNull(token, "Token should not be null");
-        System.out.println("Token: " + token);
+        logger.info("Token: " + token);
     }
 
     @Test
