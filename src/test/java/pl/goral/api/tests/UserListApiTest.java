@@ -34,5 +34,21 @@ public class UserListApiTest extends BaseApiTest {
                 .body("support.text", not(emptyString()));
     }
 
+    @Test
+    @DisplayName("Get users list from page 2 per page 3")
+    public void testGetUsersPage2() {
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
+                .when()
+                .get("/users?page=2&per_page=3")
+                .then()
+                .statusCode(200)
+                .body("page", equalTo(2))
+                .body("data", hasSize(3))
+                .body("data[0].email", containsString("@reqres.in"))
+                .body("data[0].first_name", not(emptyOrNullString()))
+                .body("data[0].avatar", startsWith("https://reqres.in/img/faces/"));
+    }
 
 }
