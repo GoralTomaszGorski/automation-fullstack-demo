@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 public class UserListApiTest extends BaseApiTest {
@@ -112,7 +113,7 @@ public class UserListApiTest extends BaseApiTest {
                 .header("x-api-key", apiKey)
                 .body(requestBody)
                 .when()
-                .post("/users")
+                .post(LIST_URL)
                 .then()
                 .statusCode(201)
                 .body("name", equalTo(user.getUsername()))
@@ -120,4 +121,35 @@ public class UserListApiTest extends BaseApiTest {
                 .body("id", notNullValue())
                 .body("createdAt", notNullValue());
     }
+
+    @Test
+    @DisplayName("Update existing user using UserGenerator")
+    public void testUpdateUserWithGenerator() throws Exception {
+        UserDto user = UserGenerator.generate();
+
+        // JSON only for needed fields
+        String requestBody = MAPPER.writeValueAsString(Map.of(
+                "name", user.getUsername(),
+                "job", user.getJob(),
+                "email", user.getEmail(),
+                "password", user.getPassword()));
+
+        String todayDate = LocalDate.now().toString(); // example. "2025-06-27"
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
+                .body(requestBody)
+                .pathParam("id", 1)
+                .when()
+                .put(SINGLE_URL)
+                .then()
+                .statusCode(200)
+                .body("name", equalTo(user.getUsername()))
+                .body("job", equalTo(user.getJob()))
+                .body("email", equalTo(user.getEmail()))
+                .body("password", equalTo(user.getPassword()))
+                .body("updatedAt", startsWith(todayDate));
+    }
+
 }
