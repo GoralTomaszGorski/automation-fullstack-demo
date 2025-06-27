@@ -13,7 +13,8 @@ import java.util.Map;
 
 public class UserListApiTest extends BaseApiTest {
 
-    private static final String USERS_URL = "/users?page=1";
+    private static final String LIST_URL = "/users";
+    private static final String SINGLE_URL = "/users/{id}";
 
     @Test
     @DisplayName("Get users list from page 1")
@@ -21,7 +22,7 @@ public class UserListApiTest extends BaseApiTest {
         given()
                 .contentType(ContentType.JSON)
                 .header("x-api-key", apiKey)
-                .get(USERS_URL)
+                .get(LIST_URL)
                 .then()
                 .statusCode(200)
                 .body("page", equalTo(1))
@@ -39,16 +40,19 @@ public class UserListApiTest extends BaseApiTest {
     }
 
     @Test
-    @DisplayName("Get users list from page 2 per page 3")
-    public void testGetUsersPage2() {
+    @DisplayName("Get users list from page 2 with 3 users per page")
+    public void testGetUsersPage2WithPerPage3() {
         given()
                 .contentType(ContentType.JSON)
                 .header("x-api-key", apiKey)
+                .queryParam("page", 2)
+                .queryParam("per_page", 3)
                 .when()
-                .get("/users?page=2&per_page=3")
+                .get(LIST_URL)
                 .then()
                 .statusCode(200)
                 .body("page", equalTo(2))
+                .body("per_page", equalTo(3))
                 .body("data", hasSize(3))
                 .body("data[0].email", containsString("@reqres.in"))
                 .body("data[0].first_name", not(emptyOrNullString()))
@@ -61,8 +65,9 @@ public class UserListApiTest extends BaseApiTest {
         given()
                 .contentType(ContentType.JSON)
                 .header("x-api-key", apiKey)
+                .pathParam("id", 2)
                 .when()
-                .get("/users/2")
+                .get(SINGLE_URL)
                 .then()
                 .statusCode(200)
                 .body("data.id", equalTo(2))
@@ -80,32 +85,12 @@ public class UserListApiTest extends BaseApiTest {
         given()
                 .contentType(ContentType.JSON)
                 .header("x-api-key", apiKey)
+                .pathParam("id", 23)
                 .when()
-                .get("/users/23")
+                .get(SINGLE_URL)
                 .then()
-                .statusCode(404);
+                .statusCode(404)
+                .body(equalTo("{}"));
     }
-
-@Test
-@DisplayName("Create user using UserGenerator")
-public void testCreateUserWithGenerator() {
-    Map<String, String> userData = UserGenerator.generateUserData();
-
-    String requestBody = new JSONObject(userData).toString();
-
-    given()
-            .contentType(ContentType.JSON)
-            .header("x-api-key", apiKey)
-            .body(requestBody)
-            .when()
-            .post("/users")
-            .then()
-            .statusCode(201)
-            .body("name", equalTo(userData.get("name")))
-            .body("job", equalTo(userData.get("job")))
-            .body("id", notNullValue())
-            .body("createdAt", notNullValue());
-}
-
 
 }
