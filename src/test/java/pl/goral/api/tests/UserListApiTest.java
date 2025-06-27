@@ -1,11 +1,15 @@
 package pl.goral.api.tests;
 
 import io.restassured.http.ContentType;
+import pl.goral.api.dto.generators.UserGenerator;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+
+import java.util.Map;
 
 public class UserListApiTest extends BaseApiTest {
 
@@ -69,5 +73,39 @@ public class UserListApiTest extends BaseApiTest {
                 .body("support.url", not(emptyString()))
                 .body("support.text", not(emptyString()));
     }
+
+    @Test
+    @DisplayName("Get non-existing user - expect 404")
+    public void testGetNonExistingUser() {
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
+                .when()
+                .get("/users/23")
+                .then()
+                .statusCode(404);
+    }
+
+@Test
+@DisplayName("Create user using UserGenerator")
+public void testCreateUserWithGenerator() {
+    Map<String, String> userData = UserGenerator.generateUserData();
+
+    String requestBody = new JSONObject(userData).toString();
+
+    given()
+            .contentType(ContentType.JSON)
+            .header("x-api-key", apiKey)
+            .body(requestBody)
+            .when()
+            .post("/users")
+            .then()
+            .statusCode(201)
+            .body("name", equalTo(userData.get("name")))
+            .body("job", equalTo(userData.get("job")))
+            .body("id", notNullValue())
+            .body("createdAt", notNullValue());
+}
+
 
 }
