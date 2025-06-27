@@ -1,11 +1,12 @@
 package pl.goral.api.tests;
 
 import io.restassured.http.ContentType;
+import pl.goral.api.dto.UserDto;
 import pl.goral.api.dto.generators.UserGenerator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -15,6 +16,8 @@ public class UserListApiTest extends BaseApiTest {
 
     private static final String LIST_URL = "/users";
     private static final String SINGLE_URL = "/users/{id}";
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     @DisplayName("Get users list from page 1")
@@ -93,4 +96,28 @@ public class UserListApiTest extends BaseApiTest {
                 .body(equalTo("{}"));
     }
 
+    @Test
+    @DisplayName("Create user using UserGenerator")
+    public void testCreateUserWithGenerator() throws Exception {
+        UserDto user = UserGenerator.generate();
+
+        String requestBody = MAPPER.writeValueAsString(Map.of(
+                "name", user.getUsername(),
+                "password", user.getPassword(),
+                "email", user.getEmail(),
+                "job", user.getJob()));
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
+                .body(requestBody)
+                .when()
+                .post("/users")
+                .then()
+                .statusCode(201)
+                .body("name", equalTo(user.getUsername()))
+                .body("job", equalTo(user.getJob()))
+                .body("id", notNullValue())
+                .body("createdAt", notNullValue());
+    }
 }

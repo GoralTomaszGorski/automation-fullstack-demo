@@ -21,4 +21,9 @@ public class UserDto {
     private String job;
     
     private String avatar;
+
+    public Object get(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'get'");
+    }
 }
