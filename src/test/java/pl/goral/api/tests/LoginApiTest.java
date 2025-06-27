@@ -2,6 +2,8 @@ package pl.goral.api.tests;
 
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -10,58 +12,42 @@ import static org.hamcrest.Matchers.*;
 public class LoginApiTest extends BaseApiTest {
 
     private static final String LOGIN_URL = "/login";
-    private static final String REGISTER_URL = "/register";
 
     @Test
-    @Order(1)
-    @DisplayName("Successful register - returns token")
-    public void testSuccessfulRegister() {
-        String requestBody = buildRequestBody(email, password);
-
-        given()
-                .contentType(ContentType.JSON)
-                .header("x-api-key", apiKey)
-                .body(requestBody)
-                .when()
-                .post(REGISTER_URL)
-                .then()
-                .statusCode(200);
-        Assertions.assertNotNull(token, "Token should not be null");
-        logger.info("Token: " + token);
-    }
-
-    @Test
-    @Order(2)
-    @DisplayName("Successful login - returns token")
+    @DisplayName("Successful login returns token")
     public void testSuccessfulLogin() {
-        String requestBody = buildRequestBody(email, password);
+        String body = buildRequestBody("eve.holt@reqres.in", "cityslicka");
 
-        given()
+        String token = given()
                 .contentType(ContentType.JSON)
                 .header("x-api-key", apiKey)
-                .body(requestBody)
+                .body(body)
                 .when()
-                .post(REGISTER_URL)
+                .post(LOGIN_URL)
                 .then()
-                .statusCode(200);
-        Assertions.assertNotNull(token, "Token should not be null");
-        logger.info("Token: " + token);
+                .statusCode(200)
+                .body("token", notNullValue())
+                .extract()
+                .path("token");
+
+        Assertions.assertNotNull(token);
+        logger.info("Login Token: " + token);
     }
 
-    @Test
-    @Order(3)
-    @DisplayName("Login without password - returns error 'Missing password'")
-    public void testLoginMissingPassword() {
-        String requestBody = buildRequestBody(email, null);
+    @ParameterizedTest
+    @DisplayName("Login errors with wrong or missing credentials")
+    @CsvFileSource(resources = "/login-data.csv", numLinesToSkip = 1)
+    void testLoginErrors(String email, String password, String expectedError) {
+        String body = buildRequestBody(email, password);
 
         given()
                 .contentType(ContentType.JSON)
                 .header("x-api-key", apiKey)
-                .body(requestBody)
+                .body(body)
                 .when()
-                .post("/login")
+                .post(LOGIN_URL)
                 .then()
                 .statusCode(400)
-                .body("error", equalTo("Missing password"));
+                .body("error", equalTo(expectedError));
     }
 }
