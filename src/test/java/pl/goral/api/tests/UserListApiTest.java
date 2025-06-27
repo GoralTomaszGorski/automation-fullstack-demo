@@ -152,4 +152,23 @@ public class UserListApiTest extends BaseApiTest {
                 .body("updatedAt", startsWith(todayDate));
     }
 
+    @Test
+    @DisplayName("Partially update user using PATCH")
+    public void testPatchUserJobOnly() throws Exception {
+        String newJob = "Test Engineer";
+        String todayDate = LocalDate.now().toString();
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("x-api-key", apiKey)
+                .body(Map.of("job", newJob))
+                .pathParam("id", 1)
+                .when()
+                .patch(SINGLE_URL)
+                .then()
+                .statusCode(200)
+                .body("job", equalTo(newJob))
+                .body("updatedAt", startsWith(todayDate));
+    }
+
 }
