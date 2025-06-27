@@ -1,0 +1,4 @@
+email,password,expectedStatus,expectedMessage
+eve.holt@reqres.in,,Missing password
+,pistol,Missing email or username,
+wrongEmail,pistol,user not found

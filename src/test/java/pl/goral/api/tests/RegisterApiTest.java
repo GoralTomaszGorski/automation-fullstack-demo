@@ -4,40 +4,41 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class LoginApiTest extends BaseApiTest {
+public class RegisterApiTest extends BaseApiTest {
 
-    private static final String LOGIN_URL = "/login";
+    private static final String REGISTER_URL = "/register";
+    private static String token;
+    private String expectedError;
 
     @Test
-    @DisplayName("Successful login returns token")
-    public void testSuccessfulLogin() {
-        String body = buildRequestBody("eve.holt@reqres.in", "cityslicka");
+    @DisplayName("Successful register - returns token")
+    public void testSuccessfulRegister() {
+        String requestBody = buildRequestBody(email, password);
 
-        String token = given()
+        token = given()
                 .contentType(ContentType.JSON)
                 .header("x-api-key", apiKey)
-                .body(body)
+                .body(requestBody)
                 .when()
-                .post(LOGIN_URL)
+                .post(REGISTER_URL)
                 .then()
                 .statusCode(200)
                 .body("token", notNullValue())
                 .extract()
                 .path("token");
 
-        Assertions.assertNotNull(token);
-        logger.info("Login Token: " + token);
+        Assertions.assertNotNull(token, "Token should not be null");
+        logger.info("Token: " + token);
     }
 
     @ParameterizedTest
-    @DisplayName("Login errors with wrong or missing credentials")
-    @CsvFileSource(resources = "/login-data.csv", numLinesToSkip = 1)
-    void testLoginErrors(String email, String password, String expectedError) {
+    @DisplayName("Try Register: 1. without password 2. without login 3. wrong email")
+    @CsvFileSource(resources = "/register-data.csv", numLinesToSkip = 1)
+    void testRegisterErrors(String email, String password, String expectedError) {
         String body = buildRequestBody(email, password);
 
         given()
@@ -45,7 +46,7 @@ public class LoginApiTest extends BaseApiTest {
                 .header("x-api-key", apiKey)
                 .body(body)
                 .when()
-                .post(LOGIN_URL)
+                .post(REGISTER_URL)
                 .then()
                 .statusCode(400)
                 .body("error", equalTo(expectedError));
