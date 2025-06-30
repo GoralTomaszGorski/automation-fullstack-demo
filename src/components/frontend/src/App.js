@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import LoginForm from './components/LoginForm';
-import { fetchUsers } from './api/reqres';
+import { useEffect, useState } from 'react';
+import { fetchUsers } from '../../../api/reqres';
+import LoginForm from './LoginForm';
 
 export default function App() {
   const [token, setToken] = useState(null);

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { login } from '../api/reqres';
+import { useState } from 'react';
+import { login } from '../../../api/reqres';
 
 export default function LoginForm({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
