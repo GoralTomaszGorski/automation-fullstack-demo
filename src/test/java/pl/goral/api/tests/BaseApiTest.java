@@ -1,16 +1,12 @@
 package pl.goral.api.tests;
 
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
-import pl.goral.api.dto.UserDto;
-import pl.goral.config.ConfigProvider;
-import pl.goral.api.filters.RequestResponseLoggingFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static io.restassured.RestAssured.given;
+import pl.goral.api.dto.UserDto;
+import pl.goral.api.filters.RequestResponseLoggingFilter;
+import pl.goral.config.ConfigProvider;
 
 public abstract class BaseApiTest {
 
