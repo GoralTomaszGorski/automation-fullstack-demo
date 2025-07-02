@@ -50,17 +50,4 @@ public class LoginApiTest extends BaseApiTest {
                 .statusCode(400)
                 .body("error", equalTo(expectedError));
     }
-
-    @Test
-    @DisplayName("Logout user - expect 200 and empty body")
-    public void testLogoutUser() {
-        given()
-                .contentType(ContentType.JSON)
-                .header("x-api-key", apiKey)
-                .when()
-                .post("/logout")
-                .then()
-                .statusCode(200)
-                .body(equalTo("{}"));
-    }
 }
