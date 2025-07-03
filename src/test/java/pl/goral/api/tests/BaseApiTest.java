@@ -1,5 +1,7 @@
 package pl.goral.api.tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
@@ -7,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import pl.goral.api.dto.UserDto;
 import pl.goral.api.filters.RequestResponseLoggingFilter;
 import pl.goral.config.ConfigProvider;
+
 
 public abstract class BaseApiTest {
 

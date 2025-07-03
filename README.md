@@ -42,7 +42,7 @@ mvn clean test
 allure generate target/allure-results --clean -o target/allure-report
 
 # 3) open in browser (Windows example)
-start target/allure-report/index.html
+allure open target/allure-report
 ````
 or after:
 mvn clean test
