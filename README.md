@@ -1,10 +1,5 @@
 # Automation Fullstack Demo
 
-Projekt pokazujący automatyzację testów UI, API oraz raportowanie z Allure.  
-Testowane API: <https://reqres.in/api/register>
-
-# automation-fullstack-demo
-
 This repository presents skills in **automated testing**, including:
 
 - UI testing with Selenium
@@ -40,9 +35,26 @@ mvn clean test
 ## 📊 How to generate Allure Report
 
 ````bash
+# 1) run tests
+mvn clean test
+
+# 2) generate static report
+allure generate target/allure-results --clean -o target/allure-report
+
+# 3) open in browser (Windows example)
+start target/allure-report/index.html
+````
+or after:
 mvn clean test
 allure generate target/allure-results --clean -o target/allure-report
-````
+open /target/allure-report/index.html by live server
+
+
+Note:
+
+On macOS/Linux you’d use open or xdg-open instead of start.
+
+The open /target/... you tried isn’t a PowerShell built‑in, so Windows threw that error.
 
 ## 🧪 Performance Testing (JMeter)
 
