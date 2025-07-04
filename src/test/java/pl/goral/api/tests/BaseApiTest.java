@@ -2,12 +2,15 @@ package pl.goral.api.tests;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.goral.api.dto.UserDto;
 import pl.goral.api.filters.RequestResponseLoggingFilter;
 import pl.goral.config.ConfigProvider;
+import pl.goral.extensions.NameLoggingExtension;
 
+@ExtendWith({NameLoggingExtension.class})
 public abstract class BaseApiTest {
 
     protected static String baseUrl;
