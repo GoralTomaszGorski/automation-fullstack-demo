@@ -1,0 +1,35 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>automation-fullstack-demo – Logowanie</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>automation-fullstack-demo – Logowanie</h1>
+
+  <form id="loginForm">
+    <label for="email">Email:</label>sae
+    <input type="email" name="email" id="email" placeholder="Wpisz email" required data-testid="login-email">
+
+    <label for="password">Hasło:</label>
+    <input type="password" name="password" id="password" placeholder="Wpisz hasło" required data-testid="login-password">
+
+    <button type="submit" data-testid="login-submit">Zaloguj</button>
+  </form>
+
+  <p id="loginMessage" data-testid="login-message"></p>
+
+  <div class="links">
+    <a href="register.html" data-testid="link-register">Zarejestruj się</a> |
+    <a href="dashboard.html" data-testid="link-dashboard">Panel użytkownika</a>
+  </div>
+
+  <footer>
+    <p style="font-size: 12px; color: #888;">Test UI – automation-fullstack-demo (powered by reqres.in or local API)</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
