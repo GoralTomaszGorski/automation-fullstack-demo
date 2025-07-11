@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard – automation-fullstack-demo</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .user-card {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .user-card img {
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard – Lista użytkowników</h1>
+
+  <button onclick="logout()" data-testid="logout-button">Wyloguj</button>
+
+  <div id="users" data-testid="user-list">
+    <p>Ładowanie użytkowników...</p>
+  </div>
+
+
+  <h2>Dodaj nowego użytkownika</h2>
+<form id="addUserForm" style="margin-bottom: 20px;">
+  <input type="text" id="firstName" placeholder="Imię" required data-testid="add-firstname" />
+  <input type="text" id="lastName" placeholder="Nazwisko" required data-testid="add-lastname" />
+  <input type="email" id="email" placeholder="Email" required data-testid="add-email" />
+  <button type="submit" data-testid="add-submit">Dodaj użytkownika</button>
+  <p id="addUserMessage" style="color:green;"></p>
+</form>
+
+  <script>
+    const API_BASE = 'https://reqres.in/api';
+    const API_KEY = 'reqres-free-v1';
+
+    async function fetchUsers() {
+      try {
+        const response = await fetch(`${API_BASE}/users?page=1`, {
+          headers: {
+            'x-api-key': API_KEY
+          }
+        });
+        const data = await response.json();
+
+        const usersDiv = document.getElementById('users');
+        usersDiv.innerHTML = '';
+
+        data.data.forEach(user => {
+          const userCard = document.createElement('div');
+          userCard.className = 'user-card';
+
+          userCard.innerHTML = `
+            <div>
+              <img src="${user.avatar}" alt="avatar" width="50" height="50">
+              <strong>${user.first_name} ${user.last_name}</strong><br>
+              <small>${user.email}</small>
+            </div>
+            <button onclick="deleteUser(${user.id})" data-testid="delete-user-${user.id}">Usuń</button>
+          `;
+
+          usersDiv.appendChild(userCard);
+        });
+
+      } catch (err) {
+        document.getElementById('users').textContent = 'Nie udało się pobrać danych.';
+      }
+    }
+
+    async function deleteUser(id) {
+      try {
+        const response = await fetch(`${API_BASE}/users/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'x-api-key': API_KEY
+          }
+        });
+
+        if (response.status === 204) {
+          alert(`Użytkownik ${id} usunięty (symulacja).`);
+          fetchUsers(); // refresh list
+        } else {
+          alert('Błąd podczas usuwania użytkownika.');
+        }
+      } catch (err) {
+        alert('Błąd połączenia.');
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+    }
+
+    // Auntentication – chcek token
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!localStorage.getItem('token')) {
+        alert('Zaloguj się najpierw!');
+        window.location.href = 'index.html';
+      } else {
+        fetchUsers();
+      }
+    });
+  </script>
+</body>
+</html>

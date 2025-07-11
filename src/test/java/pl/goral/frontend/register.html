@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Rejestracja – automation-fullstack-demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Rejestracja – automation-fullstack-demo</h1>
+
+  <form id="registerForm">
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required data-testid="register-email">
+
+    <label for="password">Hasło:</label>
+    <input type="password" name="password" id="password" required data-testid="register-password">
+
+    <button type="submit" data-testid="register-submit">Zarejestruj</button>
+  </form>
+
+  <p id="registerMessage" data-testid="register-message"></p>
+
+  <a href="index.html" data-testid="link-login">Masz konto? Zaloguj się</a>
+
+  <script src="script.js"></script>
+</body>
+</html>
