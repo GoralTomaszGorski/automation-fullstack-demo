@@ -12,7 +12,6 @@ public class RegisterApiTest extends BaseApiTest {
 
     private static final String REGISTER_URL = "/register";
     private static String token;
-    private String expectedError;
 
     @Test
     @DisplayName("Successful register - returns token")
